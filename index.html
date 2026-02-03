@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>JSオセロ制作</title>
+    <style>
+        #board {
+            display: grid;
+            grid-template-columns: repeat(8, 50px); /* 8列 */
+            grid-template-rows: repeat(8, 50px);    /* 8行 */
+            gap: 2px;
+            background-color: #333;
+            width: 414px; margin: 20px auto;
+        }
+        .cell {
+            background-color: green;
+            display: flex; justify-content: center; align-items: center;
+            cursor: pointer;
+        }
+        .stone {
+            width: 40px; height: 40px; border-radius: 50%;
+        }
+        .black { background-color: black; }
+        .white { background-color: white; }
+    </style>
+</head>
+<body>
+    <h2 style="text-align:center;">次は: <span id="turn-text">黒</span>の番</h2>
+    <div id="board"></div>
+
+    <script>
+        const boardElement = document.getElementById('board');
+        let turn = "black"; // 最初は黒
+
+        // 8x8の盤面を作成
+        for (let i = 0; i < 64; i++) {
+            const cell = document.createElement('div');
+            cell.className = 'cell';
+            
+            // クリックした時の処理
+            cell.addEventListener('click', () => {
+                // すでに石があったら置けない
+                if (cell.firstChild) return;
+
+                // 石を作成して配置
+                const stone = document.createElement('div');
+                stone.className = `stone ${turn}`;
+                cell.appendChild(stone);
+
+                // ターン交代
+                turn = (turn === "black") ? "white" : "black";
+                document.getElementById('turn-text').textContent = (turn === "black") ? "黒" : "白";
+            });
+
+            boardElement.appendChild(cell);
+        }
+    </script>
+</body>
+</html>
